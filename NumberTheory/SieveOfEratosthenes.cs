@@ -31,6 +31,9 @@ public static class SieveOfEratosthenes
             }
         }
 
+        candidates = ConvertToList(2, n, prime, candidates);
+
+        /*
         for (int i = 2; i <= n; i++)
         {
             if (prime[i])
@@ -38,6 +41,7 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         return candidates;
     }
@@ -55,11 +59,11 @@ public static class SieveOfEratosthenes
 
         bool[] prime = new bool[n + 1];
 
-        for (int i = 0; i <= n; i++)
-        {
-            prime[i] = true;
-        }
+        prime = PopulateArray(prime);
 
+        prime = FindBasicPrimes(prime, (int)Math.Sqrt(n));
+
+        /*
         for (int i = 3; i <= (int)Math.Sqrt(n); i++)
         {
             if (i % 2 == 0)
@@ -78,6 +82,7 @@ public static class SieveOfEratosthenes
                 }
             }
         }
+        */
 
         candidates = ConvertToList(2, (int)Math.Sqrt(n), prime, candidates);
 
@@ -144,6 +149,30 @@ public static class SieveOfEratosthenes
         return result;
     }
 
+    public static bool[] FindBasicPrimes(bool[] array, int to)
+    {
+        ArgumentNullException.ThrowIfNull(array);
+        for (int i = 3; i <= to; i++)
+        {
+            if (i % 2 == 0)
+            {
+                array[i] = false;
+            }
+        }
+
+        for (int p = 3; p <= to; p++)
+        {
+            if (array[p])
+            {
+                for (int i = p * p; i <= to; i += p)
+                {
+                    array[i] = false;
+                }
+            }
+        }
+        return array;
+    }
+
     /// <summary>
     /// Generates a sequence of prime numbers up to the specified limit using a concurrent approach by data decomposition.
     /// </summary>
@@ -159,6 +188,9 @@ public static class SieveOfEratosthenes
 
         prime = PopulateArray(prime);
 
+        prime = FindBasicPrimes(prime, (int)Math.Sqrt(n));
+
+        /*
         for (int i = 3; i <= (int)Math.Sqrt(n); i++)
         {
             if (i % 2 == 0)
@@ -177,6 +209,7 @@ public static class SieveOfEratosthenes
                 }
             }
         }
+        */
 
         candidates = ConvertToList(2, (int)Math.Sqrt(n), prime, candidates);
 
@@ -254,6 +287,10 @@ public static class SieveOfEratosthenes
 
         prime = PopulateArray(prime);
 
+        prime = FindBasicPrimes(prime, (int)Math.Sqrt(n));
+
+        /*
+
         for (int i = 3; i <= (int)Math.Sqrt(n); i++)
         {
             if (i % 2 == 0)
@@ -272,6 +309,8 @@ public static class SieveOfEratosthenes
                 }
             }
         }
+
+        */
 
         candidates = ConvertToList(2, (int)Math.Sqrt(n), prime, candidates);
 
@@ -360,6 +399,10 @@ public static class SieveOfEratosthenes
 
         prime = PopulateArray(prime);
 
+        prime = FindBasicPrimes(prime, (int)Math.Sqrt(n));
+
+        /*
+
         for (int i = 3; i <= (int)Math.Sqrt(n); i++)
         {
             if (i % 2 == 0)
@@ -378,6 +421,7 @@ public static class SieveOfEratosthenes
                 }
             }
         }
+        */
 
         candidates = ConvertToList(2, (int)Math.Sqrt(n), prime, candidates);
 
