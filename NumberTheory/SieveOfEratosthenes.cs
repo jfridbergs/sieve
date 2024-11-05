@@ -20,7 +20,15 @@ public static class SieveOfEratosthenes
 
         prime = PopulateArray(prime);
 
-        for (int p = 2; p * p <= n; p++)
+        for (int i = 3; i <= n; i++)
+        {
+            if (i % 2 == 0)
+            {
+                prime[i] = false;
+            }
+        }
+
+        for (int p = 3; p * p <= n; p++)
         {
             if (prime[p])
             {
