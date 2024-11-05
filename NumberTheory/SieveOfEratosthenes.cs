@@ -21,24 +21,7 @@ public static class SieveOfEratosthenes
             prime[i] = true;
         }
 
-        Console.WriteLine("n value: {0}", n);
-
-        for (int i = 3; i <= n; i++)
-        {
-            if (i % 2 == 0)
-            {
-                Console.WriteLine("even number {0}", i);
-                prime[i] = false;
-            }
-        }
-
-        Console.WriteLine("array values: ");
-        for (int i = 0; i <= n; i++)
-        {
-            Console.WriteLine("{0} is {1}", i, prime[i]);
-        }
-
-        for (int p = 3; p * p <= n; p++)
+        for (int p = 2; p * p <= n; p++)
         {
             if (prime[p])
             {
