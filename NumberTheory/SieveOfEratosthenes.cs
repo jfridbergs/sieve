@@ -14,12 +14,8 @@ public static class SieveOfEratosthenes
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
         List<int> candidates = [];
-        bool[] prime = new bool[n + 1];
 
-        for (int i = 0; i <= n; i++)
-        {
-            prime[i] = true;
-        }
+        bool[] prime = PopulateArray(n);
 
         for (int p = 2; p * p <= n; p++)
         {
@@ -117,6 +113,16 @@ public static class SieveOfEratosthenes
     /// <param name="n">The upper limit for generating prime numbers.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> containing prime numbers up to the specified limit.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the input <paramref name="n"/> is less than or equal to 0.</exception>
+
+    public static bool[] PopulateArray(int size)
+    {
+        bool[] prime = new bool[size + 1];
+        for (int i = 0; i <= prime.Length; i++)
+        {
+            prime[i] = true;
+        }
+        return prime;
+    }
     public static IEnumerable<int> GetPrimeNumbersConcurrentDataDecomposition(int n)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
