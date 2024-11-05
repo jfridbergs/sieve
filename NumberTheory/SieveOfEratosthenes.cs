@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace NumberTheory;
 
 public static class SieveOfEratosthenes
@@ -13,9 +15,10 @@ public static class SieveOfEratosthenes
     public static IEnumerable<int> GetPrimeNumbersSequentialAlgorithm(int n)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-        List<int> candidates = [];
+        Collection<int> candidates = [];
+        bool[] prime = new bool[n + 1];
 
-        bool[] prime = PopulateArray(n);
+        prime = PopulateArray(prime);
 
         for (int p = 2; p * p <= n; p++)
         {
@@ -48,7 +51,7 @@ public static class SieveOfEratosthenes
     public static IEnumerable<int> GetPrimeNumbersModifiedSequentialAlgorithm(int n)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-        List<int> candidates = [];
+        Collection<int> candidates = [];
 
         bool[] prime = new bool[n + 1];
 
@@ -76,6 +79,9 @@ public static class SieveOfEratosthenes
             }
         }
 
+        candidates = ConvertToList(2, (int)Math.Sqrt(n), prime, candidates);
+
+        /*
         for (int i = 2; i <= (int)Math.Sqrt(n); i++)
         {
             if (prime[i])
@@ -83,6 +89,7 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         for (int i = (int)Math.Sqrt(n) + 1; i <= n; i++)
         {
@@ -96,6 +103,9 @@ public static class SieveOfEratosthenes
             }
         }
 
+        candidates = ConvertToList((int)Math.Sqrt(n) + 1, n, prime, candidates);
+
+        /*
         for (int i = (int)Math.Sqrt(n) + 1; i <= n; i++)
         {
             if (prime[i])
@@ -103,8 +113,35 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         return candidates;
+    }
+
+    public static bool[] PopulateArray(bool[] array)
+    {
+        ArgumentNullException.ThrowIfNull(array);
+        for (int i = 0; i < array.Length; i++)
+        {
+            array[i] = true;
+        }
+
+        return array;
+    }
+
+    public static Collection<int> ConvertToList(int from, int to, bool[] array, Collection<int> result)
+    {
+        ArgumentNullException.ThrowIfNull(array);
+        ArgumentNullException.ThrowIfNull(result);
+        for (int i = from; i <= to; i++)
+        {
+            if (array[i])
+            {
+                result.Add(i);
+            }
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -113,27 +150,14 @@ public static class SieveOfEratosthenes
     /// <param name="n">The upper limit for generating prime numbers.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> containing prime numbers up to the specified limit.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the input <paramref name="n"/> is less than or equal to 0.</exception>
-
-    public static bool[] PopulateArray(int size)
-    {
-        bool[] prime = new bool[size + 1];
-        for (int i = 0; i <= prime.Length; i++)
-        {
-            prime[i] = true;
-        }
-        return prime;
-    }
     public static IEnumerable<int> GetPrimeNumbersConcurrentDataDecomposition(int n)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-        List<int> candidates = [];
+        Collection<int> candidates = [];
 
         bool[] prime = new bool[n + 1];
 
-        for (int i = 0; i <= n; i++)
-        {
-            prime[i] = true;
-        }
+        prime = PopulateArray(prime);
 
         for (int i = 3; i <= (int)Math.Sqrt(n); i++)
         {
@@ -154,6 +178,9 @@ public static class SieveOfEratosthenes
             }
         }
 
+        candidates = ConvertToList(2, (int)Math.Sqrt(n), prime, candidates);
+
+        /*
         for (int i = 2; i <= (int)Math.Sqrt(n); i++)
         {
             if (prime[i])
@@ -161,6 +188,7 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         int partTwoStartItem = (int)Math.Sqrt(n) + 1;
 
@@ -178,7 +206,7 @@ public static class SieveOfEratosthenes
         thread2Opt.Join();
         thread3Opt.Join();
 
-        static void FindPrimes(int from, int to, List<int> dividers, bool[] primes)
+        static void FindPrimes(int from, int to, Collection<int> dividers, bool[] primes)
         {
             for (int i = from; i < to; i++)
             {
@@ -197,6 +225,9 @@ public static class SieveOfEratosthenes
             }
         }
 
+        candidates = ConvertToList(partTwoStartItem, n, prime, candidates);
+
+        /*
         for (int i = partTwoStartItem; i <= n; i++)
         {
             if (prime[i])
@@ -204,6 +235,7 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         return candidates;
     }
@@ -217,13 +249,10 @@ public static class SieveOfEratosthenes
     public static IEnumerable<int> GetPrimeNumbersConcurrentBasicPrimesDecomposition(int n)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-        List<int> candidates = [];
+        Collection<int> candidates = [];
         bool[] prime = new bool[n + 1];
 
-        for (int i = 0; i <= n; i++)
-        {
-            prime[i] = true;
-        }
+        prime = PopulateArray(prime);
 
         for (int i = 3; i <= (int)Math.Sqrt(n); i++)
         {
@@ -244,6 +273,9 @@ public static class SieveOfEratosthenes
             }
         }
 
+        candidates = ConvertToList(2, (int)Math.Sqrt(n), prime, candidates);
+
+        /*
         for (int i = 2; i <= (int)Math.Sqrt(n); i++)
         {
             if (prime[i])
@@ -251,6 +283,7 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         List<int> dividerZeroes = [];
         List<int> dividerOnes = [];
@@ -299,7 +332,8 @@ public static class SieveOfEratosthenes
         }
 
         int partTwoStartItem = (int)Math.Sqrt(n) + 1;
-
+        candidates = ConvertToList(partTwoStartItem, n, prime, candidates);
+        /*
         for (int i = partTwoStartItem; i <= n; i++)
         {
             if (prime[i])
@@ -307,6 +341,7 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         return candidates;
     }
@@ -320,13 +355,10 @@ public static class SieveOfEratosthenes
     public static IEnumerable<int> GetPrimeNumbersConcurrentWithThreadPool(int n)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-        List<int> candidates = [];
+        Collection<int> candidates = [];
         bool[] prime = new bool[n + 1];
 
-        for (int i = 0; i <= n; i++)
-        {
-            prime[i] = true;
-        }
+        prime = PopulateArray(prime);
 
         for (int i = 3; i <= (int)Math.Sqrt(n); i++)
         {
@@ -347,6 +379,9 @@ public static class SieveOfEratosthenes
             }
         }
 
+        candidates = ConvertToList(2, (int)Math.Sqrt(n), prime, candidates);
+
+        /*
         for (int i = 2; i <= (int)Math.Sqrt(n); i++)
         {
             if (prime[i])
@@ -354,6 +389,7 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         int partTwoStartItem = (int)Math.Sqrt(prime.Length - 1) + 1;
 
@@ -383,6 +419,8 @@ public static class SieveOfEratosthenes
             countdownEvent.Wait();
         }
 
+        candidates = ConvertToList(partTwoStartItem, n, prime, candidates);
+        /*
         for (int i = partTwoStartItem; i <= n; i++)
         {
             if (prime[i])
@@ -390,6 +428,7 @@ public static class SieveOfEratosthenes
                 candidates.Add(i);
             }
         }
+        */
 
         return candidates;
     }
